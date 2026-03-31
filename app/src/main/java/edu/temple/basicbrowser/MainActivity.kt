@@ -21,6 +21,19 @@ class MainActivity : AppCompatActivity() {
         goButton = findViewById(R.id.goButton)
         webView = findViewById(R.id.webView)
 
+        //webView.loadUrl("https://www.google.com")
+        webView.settings.javaScriptEnabled = true
+
+        goButton.setOnClickListener {
+            val url = urlEditText.text.toString()
+            val parsedUrl = parseUrl(url)
+
+            urlEditText.setText(parsedUrl)
+            webView.loadUrl(parsedUrl)
+        }
+
+
+
         // Allow your browser to intercept hyperlink clicks
         webView.webViewClient = object: WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -28,5 +41,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    fun parseUrl(url: String) : String{
+        return if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            "https://$url"
+        } else {
+            url
+        }
     }
 }
